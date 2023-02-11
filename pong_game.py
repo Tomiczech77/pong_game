@@ -24,6 +24,28 @@ stisknute_klavesy = set() #sada stisknutych klaves
 skore = [0, 0] # skore dvou hracu
 
 
+def nakresli_obdelnik(x1, y1, x2, y2):
+    """Nakresli obdelnik na dane souradnice
+
+    Nazorny diagram::
+
+         y2 - +-----+
+              |/////|
+         y1 - +-----+
+              :     :
+             x1    x2
+    """
+    # Tady pouzijeme volani OpenGL, ktere je pro nas zatim asi nejjednodussi
+    # na pouziti
+    gl.glBegin(gl.GL_TRIANGLE_FAN)   # zacni kreslit spojene trojuhelniky
+    gl.glVertex2f(int(x1), int(y1))  # vrchol A
+    gl.glVertex2f(int(x1), int(y2))  # vrchol B
+    gl.glVertex2f(int(x2), int(y2))  # vrchol C, nakresli trojuhelnik ABC
+    gl.glVertex2f(int(x2), int(y1))  # vrchol D, nakresli trojuhelnik BCD
+    # dalsi souradnice E by nakreslila trojuhelnik CDE, atd.
+    gl.glEnd()  # ukonci kresleni trojuhelniku
+
+
 def stisk_klavesy(symbol, modifikatory):
     if symbol == key.W:
         stisknute_klavesy.add(("nahoru", 0))
@@ -109,27 +131,6 @@ def reset():
 reset()
 
 
-def nakresli_obdelnik(x1, y1, x2, y2):
-    """Nakresli obdelnik na dane souradnice
-
-    Nazorny diagram::
-
-         y2 - +-----+
-              |/////|
-         y1 - +-----+
-              :     :
-             x1    x2
-    """
-    # Tady pouzijeme volani OpenGL, ktere je pro nas zatim asi nejjednodussi
-    # na pouziti
-    gl.glBegin(gl.GL_TRIANGLE_FAN)   # zacni kreslit spojene trojuhelniky
-    gl.glVertex2f(int(x1), int(y1))  # vrchol A
-    gl.glVertex2f(int(x1), int(y2))  # vrchol B
-    gl.glVertex2f(int(x2), int(y2))  # vrchol C, nakresli trojuhelnik ABC
-    gl.glVertex2f(int(x2), int(y1))  # vrchol D, nakresli trojuhelnik BCD
-    # dalsi souradnice E by nakreslila trojuhelnik CDE, atd.
-    gl.glEnd()  # ukonci kresleni trojuhelniku
-
 def nakresli_text(text, x, y, pozice_x):
     """Nakresli dany text na danou pozici
 
@@ -142,6 +143,7 @@ def nakresli_text(text, x, y, pozice_x):
         x=x, y=y, anchor_x=pozice_x
     )
     napis.draw()
+
 
 def vykresli():
     """Vykresli stav hry""" 
@@ -196,7 +198,6 @@ def vykresli():
         y=VYSKA - ODSAZENI_TEXTU - VELIKOST_FONTU,
         pozice_x="right"
     )
-
 
 
 window = pyglet.window.Window(width=SIRKA, height=VYSKA)
