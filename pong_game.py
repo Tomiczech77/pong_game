@@ -207,7 +207,6 @@ window.push_handlers(
 )
 
 
-
 pyglet.clock.schedule(obnov_stav) # zaregistrovaná funkce obnov_stav na tik hodin pygletu
 
 # music = pyglet.resource.media("music.mp3")
